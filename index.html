@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vòng quay may mắn</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg1:#e6f7ff;--bg2:#f3e8ff;}
+    html,body{height:100%;}
+    body{
+      font-family:'Poppins',sans-serif;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;
+      background:radial-gradient(1200px 600px at 50% -10%,rgba(255,255,255,.8),rgba(255,255,255,0)),
+                 radial-gradient(circle at 20% 20%,#e8fff6,transparent 60%),
+                 radial-gradient(circle at 80% 30%,#e9e1ff,transparent 55%),
+                 linear-gradient(180deg,var(--bg1),var(--bg2));
+    }
+    h1{margin:28px 16px 12px;color:#1f2937;text-shadow:0 1px 0 rgba(255,255,255,.6);font-weight:700;}
+    .wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding-bottom:10px;}
+    .wheel-wrap{position:relative;width:360px;height:360px;margin-bottom:8px;}
+    #wheel{width:360px;height:360px;border-radius:50%;border:10px solid #222;box-shadow:0 12px 35px rgba(0,0,0,.22), inset 0 0 10px rgba(0,0,0,.08);transition:transform 4s ease-out;display:flex;align-items:center;justify-content:center;}
+    #arrow{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:28px solid #ef4444;position:absolute;left:50%;transform:translateX(-50%);top:-14px;filter:drop-shadow(0 3px 2px rgba(0,0,0,.25));}
+    button{padding:12px 28px;background:linear-gradient(45deg,#ff7b00,#ffcc00);border:none;color:#111827;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;margin-top:6px;transition:.15s;box-shadow:0 8px 18px rgba(255,158,13,.4);}
+    button:hover{transform:translateY(-1px);}button:active{transform:translateY(1px) scale(.99);}
+    #result{margin-top:8px;font-size:20px;font-weight:700;color:#111827;}
+    .note{font-size:12px;color:#4b5563;opacity:.8;margin-top:6px;}
+    .label{position:absolute;top:50%;left:50%;transform-origin:center center;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;font-size:18px;}
+
+    /* Blog styles */
+    .blog{max-width:900px;width:100%;background:#ffffffcc;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:28px;margin:24px 16px 60px;}
+    .blog h2{margin:0 0 10px;color:#1f2937;font-size:28px}
+    .blog .meta{color:#6b7280;font-size:14px;margin-bottom:16px}
+    .blog p{color:#111827;line-height:1.75;margin:14px 0;font-size:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎯 Vòng quay may mắn 🎯</h1>
+    <div class="wheel-wrap">
+      <div id="arrow"></div>
+      <div id="wheel"></div>
+    </div>
+    <button id="spinBtn" onclick="spin()">Quay ngay!</button>
+    <h2 id="result"></h2>
+    <div class="note">* Sau khi vòng quay dừng và hiện kết quả, trang sẽ tự chuyển tiếp.</div>
+  </div>
+
+  <section class="blog">
+    <h2>Đời sống tự nhiên: người thầy trầm tĩnh của thời hiện đại</h2>
+    <div class="meta">Bài viết gốc • Góc nhìn & cảm hứng sống xanh</div>
+
+<p>Giữa nhịp sống hối hả, thiên nhiên vẫn kiên nhẫn mở ra một nhịp điệu riêng: mặt trời mọc rồi lặn, thủy triều lên rồi xuống, lá non bung nở rồi lại rơi về đất. Khi ta cho mình cơ hội sống chậm lại và lắng nghe, ta nhận ra đời sống tự nhiên không chỉ là phông nền của cuộc sống con người, mà là một người thầy trầm tĩnh, giàu lòng kiên nhẫn, luôn sẵn sàng chỉ dẫn về cách cân bằng, chữa lành và đổi mới.</p>
+<p>Thiên nhiên dạy ta về sự tuần hoàn. Một chiếc lá vàng rụng xuống không phải là dấu chấm hết, mà là lời hẹn tái sinh. Trong lòng đất, lá mục nuôi nấm, vi sinh và vô số sinh vật tí hon. Những sinh thể bé nhỏ ấy lại biến đổi chất dinh dưỡng thành nguồn lực cho mầm cây vươn lên. Hệ sinh thái vận hành như một nền kinh tế tuần hoàn gần như hoàn hảo: không lãng phí, không dư thừa, mọi thứ đều có chỗ của mình. Ta có thể học cách sắp xếp cuộc sống theo tinh thần ấy: tiết chế nhu cầu, tái sử dụng, trao đổi và cộng tác thay vì chỉ tiêu thụ.</p>
+<p>Nếu quan sát kỹ một dòng suối, ta sẽ thấy nước hiền hòa lách qua khe đá, uốn mình theo địa hình thay vì cố gắng cưỡng lại. Sự mềm dẻo ấy không phải yếu đuối, mà là một dạng sức mạnh khác: kiên định mà không cứng nhắc. Trong công việc lẫn quan hệ, đôi khi ta cần “chảy” như nước—điều chỉnh, thích nghi, tìm con đường ít ma sát nhất, rồi kiên trì tiếp tục. Tự nhiên không hấp tấp, nhưng chẳng bao giờ bỏ dở.</p>
+<p>Rừng là một thành phố sống động. Bên dưới tán cây, mạng lưới nấm mốc và rễ cây đan xen như sợi cáp quang, truyền tín hiệu và dinh dưỡng giữa các cá thể. Khi một cây bị sâu bệnh, những cây xung quanh có thể “gửi” dưỡng chất hỗ trợ. Từ câu chuyện của rừng, ta thấy sự thịnh vượng không chỉ đến từ sức mạnh của từng cá nhân, mà đến từ mức độ gắn kết của cả cộng đồng. Sự tử tế lan truyền như ánh nắng xuyên qua những tầng lá.</p>
+<p>Biển thì khác: rộng lớn, bao dung, và luôn nhắc ta về sự khiêm nhường. Nhìn những con sóng không ngừng vỗ bờ, ta thấy những chu kỳ thất bại và bắt đầu lại—mỗi đợt rút lui chỉ để dồn năng lượng cho lần xô tới tiếp theo. Biển cũng dạy ta về giới hạn: chỉ cần thêm một chút nhựa, một chút dầu loang, hệ cân bằng mong manh có thể bị phá vỡ. Chừng nào ta biết đặt giới hạn cho dục vọng tiêu dùng, chừng ấy ta còn giữ được những đại dương xanh trong trí nhớ con cháu mình.</p>
+<p>Trong thành phố, thiên nhiên có thể hiện diện khiêm nhường hơn: vài chậu cây ban công, một khu vườn trên mái, con chim sẻ đậu bên khung cửa sổ, hay chỉ là một hàng cây bằng lăng tím vào mùa mưa. Khoảnh khắc chạm vào tự nhiên—even nhỏ bé—cũng đủ làm dịu hệ thần kinh, giúp trái tim hạ nhịp, đầu óc sáng hơn. Nhiều nghiên cứu cho thấy chỉ cần 20 phút ở không gian xanh mỗi ngày đã cải thiện đáng kể chất lượng giấc ngủ, sự tập trung và cảm xúc tích cực.</p>
+<p>Sống “thuận tự nhiên” không có nghĩa là rút khỏi văn minh. Đó là chọn mối quan hệ hợp tác thay vì khai thác: ăn theo mùa để giảm vận chuyển đường dài; ủ rác hữu cơ thành phân bón cho cây; ưu tiên đồ bền và có thể sửa; tắt bớt màn hình để dành thời gian đi bộ dưới tán cây. Khi những thói quen nhỏ được lặp lại, chúng dệt thành phong cách sống nhẹ nhàng với Trái Đất—và cũng nhẹ nhàng với chính mình.</p>
+<p>Cũng như cây cần cả nắng lẫn mưa, mỗi chúng ta cần cả thành tựu lẫn khoảng lặng. Có những ngày ta nên dấn bước, có những ngày ta chỉ nên ngồi xuống, hít sâu, lắng nghe tiếng gió lùa qua kẽ lá. Tự nhiên nhắc ta rằng nhịp điệu bền vững không phải là chạy hết tốc lực, mà là biết khi nào tiến, khi nào dừng, khi nào đổi hướng. Đó là sự khôn ngoan của muôn loài, thứ khôn ngoan mà ta có thể học từng chút một, ngay từ hôm nay.</p>
+<p>Nếu bạn có cơ hội, hãy thử một “nghi thức xanh” đơn giản: buổi sáng mở cửa sổ, để ánh sáng sớm chạm vào mặt; pha một ly nước ấm, nhìn hơi nước bốc lên; đặt tay lên thành ban công, tìm một mảng xanh trước mắt—một tán cây, bầu trời, hay chậu sen đá nhỏ. Chỉ cần 2–3 phút như thế, bạn đã âm thầm nạp lại năng lượng. Buổi tối, thay vì lướt điện thoại đến khuya, hãy tắt bớt đèn, mở một bản nhạc nhẹ và để ý tiếng mưa hoặc tiếng côn trùng ngoài hiên. Bạn sẽ thấy cơ thể biết cách tự hạ ga.</p>
+<p>Thiên nhiên không bao giờ tranh giành hào quang, nhưng lại bền bỉ nuôi dưỡng tất cả. Khi ta đặt bản thân trong bức tranh lớn hơn của đất trời, ta bỗng thấy những bồn chồn và gấp gáp của mình trở nên nhỏ lại. Từ đó, ta có thể lựa chọn sống chậm hơn một nhịp, tử tế hơn một chút, và kiên nhẫn hơn trên con đường mình đi. Đó là món quà lớn nhất mà đời sống tự nhiên gửi tặng—món quà không cần gói, không cần hóa đơn, chỉ cần ta mở lòng tiếp nhận.</p>
+
+  </section>
+
+  <script>
+    const wheel = document.getElementById('wheel');
+    const prizes = [
+      { text: '+100K', color: '#4caf50', icon: '💎' },
+      { text: '+150K', color: '#1976d2', icon: '⚡' },
+      { text: '+89K',  color: '#ff5f5f', icon: '💰' },
+      { text: '+119K', color: '#9c27b0', icon: '🎉' }
+    ];
+    const step = 360 / prizes.length;
+    // tô màu lát tam giác
+    wheel.style.background = `conic-gradient(
+      ${prizes[0].color} 0deg ${step}deg,
+      ${prizes[1].color} ${step}deg ${step*2}deg,
+      ${prizes[2].color} ${step*2}deg ${step*3}deg,
+      ${prizes[3].color} ${step*3}deg 360deg)`;
+
+    // thêm nhãn chữ giữa mỗi lát
+    prizes.forEach((p, i) => {
+      const label = document.createElement('div');
+      label.className = 'label';
+      const angle = i * step + step / 2;
+      const radius = 110; // giữa vòng
+      const x = radius * Math.sin(angle * Math.PI / 180);
+      const y = -radius * Math.cos(angle * Math.PI / 180);
+      label.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${angle}deg)`;
+      label.innerHTML = `<div>${p.icon}</div><div>${p.text}</div>`;
+      wheel.appendChild(label);
+    });
+
+    function playTing() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 1200;
+        o.connect(g); g.connect(ctx.destination);
+        const now = ctx.currentTime;
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.3, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+        o.start(now); o.stop(now + 0.4);
+      } catch (e) {}
+    }
+
+    function confettiSimple() {
+      const count = 60;
+      for (let i=0;i<count;i++){
+        const c = document.createElement('div');
+        const s = Math.random()*6+4;
+        c.style.position='fixed';c.style.top='-10px';c.style.left=(Math.random()*100)+'%';
+        c.style.width=s+'px';c.style.height=s+'px';
+        c.style.background=['#4caf50','#1976d2','#ff5f5f','#9c27b0'][Math.floor(Math.random()*4)];
+        c.style.opacity=.9;c.style.borderRadius='50%';c.style.pointerEvents='none';c.style.zIndex=9999;
+        document.body.appendChild(c);
+        const duration=Math.random()*1200+1200;
+        const endX=(Math.random()*2-1)*120;
+        const start=performance.now();
+        function fall(t){
+          const p=(t-start)/duration;if(p>=1){c.remove();return;}
+          c.style.transform=`translate(${endX*p}px,${p*window.innerHeight}px) rotate(${p*720}deg)`;
+          requestAnimationFrame(fall);
+        }
+        requestAnimationFrame(fall);
+      }
+    }
+
+    function spin() {
+      const btn = document.getElementById('spinBtn');
+      btn.disabled = true; btn.style.opacity = .7;
+      const randomDeg = 720 + Math.floor(Math.random()*360);
+      wheel.style.transform = `rotate(${randomDeg}deg)`;
+      document.getElementById('result').textContent = '';
+      setTimeout(() => {
+        const idx = Math.floor(((360 - (randomDeg % 360)) / step)) % prizes.length;
+        const pr = prizes[idx];
+        document.getElementById('result').textContent = `🎉 Bạn trúng: ${pr.text} ${pr.icon}`;
+        playTing(); confettiSimple();
+        setTimeout(() => {
+          window.location.href = 'https://web.wwin79.pro/?a=1a36797027f05aef97aa91d942410619&utm_campaign=googleads&utm_source=inhouse&utm_medium=search&utm_term=%7Bkeyword%7D&utm_content=keybrand';
+        }, 2500);
+      }, 4200);
+    }
+  </script>
+</body>
+</html>
