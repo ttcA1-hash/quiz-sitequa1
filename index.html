@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vòng quay may mắn</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <style>
+    :root{
+      --bg1:#e6f7ff;
+      --bg2:#f3e8ff;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100%;
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.8), rgba(255,255,255,0)),
+                  radial-gradient(circle at 20% 20%, #e8fff6, transparent 60%),
+                  radial-gradient(circle at 80% 30%, #e9e1ff, transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+    h1 {
+      margin: 28px 16px 12px;
+      color: #1f2937;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+    .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 30px;
+    }
+    #wheel {
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 10px solid #222;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: transform 4s ease-out;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.22), inset 0 0 10px rgba(0,0,0,0.08);
+    }
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform-origin: 100% 100%;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: center;
+      padding: 10px;
+      box-sizing: border-box;
+      text-shadow: 0 1px 0 rgba(0,0,0,.25);
+    }
+    .segment .icon {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    #arrow {
+      width: 0; height: 0; 
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 28px solid #ef4444;
+      margin: 14px auto 6px;
+      filter: drop-shadow(0 3px 2px rgba(0,0,0,.25));
+    }
+    button {
+      padding: 12px 28px;
+      background: linear-gradient(45deg, #ff7b00, #ffcc00);
+      border: none;
+      color: #111827;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform .15s ease, box-shadow .2s ease;
+      box-shadow: 0 8px 18px rgba(255, 158, 13, .4);
+    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(1px) scale(.99); }
+    #result {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #111827;
+    }
+    .note {
+      font-size: 12px;
+      color: #4b5563;
+      opacity: .8;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎯 Vòng quay may mắn 🎯</h1>
+    <div id="arrow"></div>
+    <div id="wheel"></div>
+    <button id="spinBtn" onclick="spin()">Quay ngay!</button>
+    <h2 id="result"></h2>
+    <div class="note">* Sau khi vòng quay dừng và hiện kết quả, trang sẽ tự chuyển tiếp.</div>
+  </div>
+
+  <script>
+    const wheel = document.getElementById('wheel');
+    const spinBtn = document.getElementById('spinBtn');
+
+    // 🎁 Danh sách quà + icon + màu sắc
+    const prizes = [
+      { text: '+88K người mới', color: '#ff5f5f', icon: '💰' },
+      { text: '+86K người mới', color: '#f9a825', icon: '🎁' },
+      { text: '+100K người mới', color: '#4caf50', icon: '💎' },
+      { text: 'X3 nạp đầu', color: '#1976d2', icon: '⚡' },
+      { text: 'Quà ngẫu nhiên nạp đầu', color: '#9c27b0', icon: '🎲' },
+      { text: 'Thêm lượt quay', color: '#ff9800', icon: '🔁' }
+    ];
+
+    // Tạo các phần bánh xe
+    for (let i = 0; i < prizes.length; i++) {
+      const segment = document.createElement('div');
+      segment.className = 'segment';
+      segment.style.background = prizes[i].color;
+      segment.style.transform = `rotate(${i * (360 / prizes.length)}deg) skewY(-30deg)`;
+
+      const icon = document.createElement('div');
+      icon.className = 'icon';
+      icon.textContent = prizes[i].icon;
+
+      const label = document.createElement('div');
+      label.textContent = prizes[i].text;
+
+      segment.appendChild(icon);
+      segment.appendChild(label);
+      wheel.appendChild(segment);
+    }
+
+    // Tạo âm thanh "ting" khi trúng
+    function playTing() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = 1200; // cao, nghe "ting"
+        o.connect(g);
+        g.connect(ctx.destination);
+        const now = ctx.currentTime;
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.3, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+        o.start(now);
+        o.stop(now + 0.4);
+      } catch (e) {
+        // bỏ qua nếu trình duyệt không hỗ trợ
+      }
+    }
+
+    // (Tuỳ chọn) hiệu ứng confetti đơn giản
+    function confettiSimple() {
+      const count = 80;
+      for (let i=0; i<count; i++) {
+        const c = document.createElement('div');
+        const size = Math.random()*6 + 4;
+        c.style.position = 'fixed';
+        c.style.top = '-10px';
+        c.style.left = (Math.random()*100)+'%';
+        c.style.width = size+'px';
+        c.style.height = size+'px';
+        c.style.background = ['#ff5f5f','#f9a825','#4caf50','#1976d2','#9c27b0','#ff9800'][Math.floor(Math.random()*6)];
+        c.style.opacity = .9;
+        c.style.transform = 'rotate('+(Math.random()*360)+'deg)';
+        c.style.borderRadius = (Math.random()<0.5?'50%':'2px');
+        c.style.pointerEvents = 'none';
+        c.style.zIndex = 9999;
+        document.body.appendChild(c);
+        const duration = Math.random()*1200 + 1200;
+        const endX = (Math.random()*2-1)*120;
+        const start = performance.now();
+        function fall(t){
+          const p = (t-start)/duration;
+          if (p>=1) { c.remove(); return; }
+          c.style.transform = 'translate('+ (endX*p)+'px,'+ (p*window.innerHeight)+'px) rotate('+(p*720)+'deg)';
+          requestAnimationFrame(fall);
+        }
+        requestAnimationFrame(fall);
+      }
+    }
+
+    function spin() {
+      // Khoá nút trong lúc quay
+      spinBtn.disabled = true;
+      spinBtn.style.opacity = .7;
+
+      const randomDeg = 720 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${randomDeg}deg)`;
+      document.getElementById('result').textContent = '';
+
+      setTimeout(() => {
+        const selectedIndex = Math.floor(((360 - (randomDeg % 360)) / (360 / prizes.length))) % prizes.length;
+        const selectedPrize = prizes[selectedIndex];
+        document.getElementById('result').textContent = `🎉 Bạn trúng: ${selectedPrize.text} ${selectedPrize.icon}`;
+
+        // âm thanh + hiệu ứng
+        playTing();
+        confettiSimple();
+
+        // 👉 Sau khi hiện kết quả 2.5s, tự động chuyển hướng
+        setTimeout(() => {
+          window.location.href = "https://web.wwin79.pro/?a=1a36797027f05aef97aa91d942410619&utm_campaign=googleads&utm_source=inhouse&utm_medium=search&utm_term=%7Bkeyword%7D&utm_content=keybrand";
+        }, 2500);
+      }, 4200);
+    }
+  </script>
+</body>
+</html>
